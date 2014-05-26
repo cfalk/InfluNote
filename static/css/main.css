@@ -1,0 +1,54 @@
+body {
+ margin:0px;
+ padding:0px;
+ background-color:white;
+ font-family:"Arimo"
+}
+
+#header {
+ background-color:#4d004b;
+ color:white;
+ padding:40px 20px 30px 40px;
+
+ letter-spacing:5px;
+ font-size: 36px;
+}
+
+#searchBox {
+ margin:0 auto;
+ text-align:center;
+ padding:20px 0px 20px 0px;
+}
+
+#searchBox input, #searchBox select {
+ background-color:white;
+ font-size:16px;
+ font-weight:bold;
+
+ border:2px solid #88419d;
+ border-right:1px solid #88419d;
+ border-left:1px solid #88419d;
+}
+
+#searchBox select {
+ padding: 10px 10px 10px 10px;
+}
+
+#searchBox input {
+ padding: 10px 20px 10px 20px;
+ width:280px;
+}
+
+#contentContainer {
+ width:80%;
+ margin:0 auto;
+ margin-bottom:20px;
+
+ text-align:left;
+ line-height:25px;
+}
+
+#footer {
+ margin-top:40px;
+ text-align:center;
+}

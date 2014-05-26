@@ -1,0 +1,27 @@
+<html>
+
+<head>
+  <title>InfluNote</title>
+  <link href='http://fonts.googleapis.com/css?family=Arimo:400,700' rel='stylesheet' type='text/css'>
+  <link rel="stylesheet" type="text/css" href="{{STATIC_URL}}/css/main.css">
+  <script src="{{STATIC_URL}}/js/jquery.js" rel="javascript"></script>
+</head>
+
+<body>
+  {% include "header.html" %}
+
+  {% include "searchBox.html" %}
+
+  <div id="contentContainer">
+    {% with content|add:".html" as template %}
+    {% include template %}
+    {% endwith %}
+  </div>
+
+  {% include "footer.html" %}
+
+</body>
+
+<script src="{{STATIC_URL}}/js/main.js" rel="javascript"></script>
+
+</html>
