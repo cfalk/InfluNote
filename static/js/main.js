@@ -11,20 +11,68 @@ function formToJSON(form){
   return formContent;
 }
 
+function applyLoadingWheel(location){
+  $(location).append("<div class=\"loadingWheel\">. . .</div>");
+}
+
+function getTrackFromString(str) {
+  var firstQuotationMark = str.indexOf("\"")
+  var lastQuotationMark = str.lastIndexOf("\"")
+
+  //If there are no quotation marks, assume the entire input is the song.
+  var track;
+  if (firstQuotationMark===-1 && lastQuotationMark===-1){
+    track = str;
+  } else if (firstQuotationMark==lastQuotationMark) {
+    throw "Only one quotation mark?";
+  } else {
+    track = str.substring(firstQuotationMark+1, lastQuotationMark);
+  }
+  return track
+}
+
+function getArtistFromString(str) {
+  //Remove the track name from the string.
+  var track = getTrackFromString(str);
+  cleaned_str = str.replace("\""+track+"\"", "");
+
+  //Remove "by" or "--" from the cleaned string (as well as any wrapping whitespace).
+  artist = cleaned_str.replace("by","").replace("--","").trim();
+  
+  return artist
+}
+
+
 $("#searchButton").on("click", function() {
   //Set the default size for the body.
   var width = parseInt(d3.select("body").style("width"), 10);
   var height = parseInt(d3.select("body").style("height"), 10);
 
   //Get the request from the form and make sure it is a valid format.
-  var query = formToJSON("#searchForm");
-  //TODO: Validate the query.
+  var formJSON = formToJSON("#searchForm");
+  try {
+    formJSON["track"] = getTrackFromString(formJSON["query"]);
+    formJSON["artist"] = getArtistFromString(formJSON["query"]);
+  } catch(err){
+    alert(err); //TODO:Apply ribbon message.
+  }
 
-  $.get(queryURL, query, function(response) {
+  applyLoadingWheel("#contentContainer");
+
+  $.get(queryURL, formJSON, function(response) {
+    $(".loadingWheel").remove();
+
+    if (typeof response !== "object" && response.indexOf("ERROR") != -1) {
+      //TODO: Error message.
+      alert(response);
+    }
+
     //Variable Setup.
-    data = query["data"];
-    adjacency = query["adjacency"];
-    options = query["options"];
+    data = response["data"];
+    adjacency = response["adjacency"];
+    options = response["options"];
+
+    console.log(response);
 
     //Add a unique integer ID for each row.
     for (var i=0; i<data.length; i++){
@@ -32,7 +80,6 @@ $("#searchButton").on("click", function() {
     }
 
     //Create the filter system.
-    options = optionJSON;
     clearFilters();
 
     //Draw and style the network itself.
