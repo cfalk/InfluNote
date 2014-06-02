@@ -4,7 +4,7 @@ var queryURL = "/search/"
 var dataFile, adjacencyFile, optionsFile;
 
 var maxRadius = 10; //The largest radius allowed for the most important node.
-var minRadius = 2; //The smallest radius allowed for any given node.
+var minRadius = 5; //The smallest radius allowed for any given node.
 var hoverScale = 1.5; //The percentage to "grow" a node when hovered over.
 var linkDistance = 120;
 var numGraphIterations = 100;
@@ -12,6 +12,6 @@ var graphGravity = 0.2;
 var graphCharge = -35;
 
 //The fields to display on the graph:
-var tooltips = [["track","Song"], 
+var tooltips = [["title","Song"], ["artist","Artist"]
 		];
 </script>

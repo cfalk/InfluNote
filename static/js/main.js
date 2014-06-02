@@ -68,16 +68,29 @@ $("#searchButton").on("click", function() {
     }
 
     //Variable Setup.
-    data = response["data"];
+    var dataArray = response["data"];
+    var headers = dataArray.shift();
+
     adjacency = response["adjacency"];
     options = response["options"];
 
-    console.log(response);
 
-    //Add a unique integer ID for each row.
-    for (var i=0; i<data.length; i++){
+    //Get the data headers.
+    data = Array.apply([], Array( dataArray.length)).map(
+          function () { return {} }
+        ); 
+
+    //Add a unique integer ID for each row and convert the dataArray to a 
+    //  header-based JSON array.
+    for (var i=0; i<dataArray.length; i++){
+      for (var j=0; j < headers.length; j++){
+        var header = headers[j];
+        data[i][header] = dataArray[i][j];
+      }
       data[i]["id"] = i;
     }
+
+    console.log(data);
 
     //Create the filter system.
     clearFilters();

@@ -1,5 +1,7 @@
 function prettifiedTooltip(tooltips, i, d){
 	var title = tooltips[i][1] + ": ";
+        console.log(d);
+        console.log(tooltips);
 	var rawText = d[tooltips[i][0]];
 	var prettyText = rawText.split("+").join(", ");
 

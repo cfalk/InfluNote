@@ -40,7 +40,7 @@ def get_id(track):
 
 def get_cumulative_data(song, artist, depth): 
   #Variable Setup.
-  sim_limit = 2
+  sim_limit = 10
 
   #Load the initial song info.
   try:
@@ -49,13 +49,12 @@ def get_cumulative_data(song, artist, depth):
     track_list = [get_id(orig_track)]
 
     new_tracks = [sim[0] for sim in orig_track.get_similar()[:sim_limit]]
-    track_adjacency = []
+    track_adjacency = [new_tracks]
+
     for i in xrange(depth):
       tracks_to_calculate = new_tracks
       new_tracks = []
-
       for track in tracks_to_calculate:
-        print "track: {}".format(track.title)
         track_id = get_id(track)
         if track_id not in track_list:
           track_list.append(track_id)
@@ -65,6 +64,8 @@ def get_cumulative_data(song, artist, depth):
             similar_tracks = [sim[0] for sim in track.get_similar()[:sim_limit]]
             track_adjacency.append(similar_tracks)
             new_tracks += similar_tracks
+          else:
+            track_adjacency.append([])
 
   except Exception as e:
     print e
@@ -73,19 +74,21 @@ def get_cumulative_data(song, artist, depth):
   #Get the track information to display for each unique track.
   fields = ["title", "artist"]
   data = [fields] + [get_track_data(track) for track in overall_tracks]
-  
+
   #Get the unique options for each field.
   options = {field:[] for field in fields}
   for row in data[1:]:
     for (value, field) in zip(row, fields):
       if value not in options[field]:
         options[field].append(value)
- 
+
   #Get a numbered adjacency matrix corresponding to the order of the data.
-  adjacency = []
-  for similar_tracks in track_adjacency:
+  num_tracks = len(track_adjacency)
+  adjacency = [[]]*num_tracks
+  for i in xrange(num_tracks):
+    similar_tracks = track_adjacency[i]
     connections = [track_list.index(get_id(track)) for track in similar_tracks]
-    adjacency.append(connections)
+    adjacency[i] = connections
 
   return {"data": data, "adjacency":adjacency, "options":options}
 

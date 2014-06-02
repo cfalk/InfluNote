@@ -81,3 +81,9 @@ a:hover {
  margin: 0 auto;
  text-align:center;
 }
+
+.tooltipBackground{
+ stroke-width:1px;
+ fill:#88419d;
+ opacity:0.8;
+}
